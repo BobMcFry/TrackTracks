@@ -1,4 +1,6 @@
-POETRY_RUN=poetry run
+
+POETRY=poetry
+POETRY_RUN=${POETRY} run
 
 .PHONY: format
 format:
@@ -11,3 +13,7 @@ lint:
 .PHONY: type
 type:
 	${POETRY_RUN} mypy .
+
+.PHONY: requirements
+requirements:
+	${POETRY} export --format requirements.txt --output requirements.txt
