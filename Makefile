@@ -12,7 +12,7 @@ lint:
 
 .PHONY: type
 type:
-	${POETRY_RUN} mypy .
+	${POETRY_RUN} mypy --install-types .
 
 .PHONY: requirements
 requirements:
