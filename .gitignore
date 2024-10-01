@@ -85,6 +85,8 @@ ipython_config.py
 
 .python-version
 
+out
+
 .pdm.toml
 
 # PEP 582; used by e.g. github.com/David-OConnor/pyflow and github.com/pdm-project/pdm
