@@ -1,6 +1,23 @@
-# syntax=docker/dockerfile:1
+FROM python:3.12.2-slim-bookworm as builder
+# Install uv for dependency intallation
+COPY --from=ghcr.io/astral-sh/uv:0.4.17 /uv /bin/uv
 
-FROM python:3.12-slim-bookworm as base
+# Change the working directory to the `app` directory
+WORKDIR /app
+
+RUN --mount=type=cache,target=/root/.cache/uv \
+    --mount=type=bind,source=uv.lock,target=uv.lock \
+    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
+    uv sync --frozen --no-install-project
+
+# Copy the project into the intermediate image
+ADD . /app
+
+# Sync the project
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --frozen
+
+FROM python:3.12.2-slim-bookworm
 
 # Prevents Python from writing pyc files.
 ENV PYTHONDONTWRITEBYTECODE=1
@@ -20,23 +37,20 @@ RUN adduser \
     --uid "${UID}" \
     appuser
 
-# Dependencies: qreader->libzbar0
-RUN apt-get install libzbar0
+# Dependencies: qreader->libzbar0 (we need an update for that)
+RUN apt update && apt install -y libzbar0 \
+    && apt clean \
+    && rm -rf /var/lib/apt/lists/*
 
-# Download dependencies as a separate step to take advantage of Docker's caching.
-# Leverage a cache mount to /root/.cache/pip to speed up subsequent builds.
-# Leverage a bind mount to requirements.txt to avoid having to copy them
-# into this layer.
-RUN --mount=type=cache,target=/root/.cache/pip \
-    --mount=type=bind,source=requirements.txt,target=requirements.txt \
-    python -m pip install -r requirements.txt
+# Copy the environment, but not the source code
+COPY --from=builder --chown=appuser:appuser /app/.venv /app/.venv
 
 # Switch to the non-privileged user to run the application.
 USER appuser
 
 # Copy the source code into the container.
-COPY . /home/appuser/code
-WORKDIR /home/appuser/code
+COPY . /app
+WORKDIR /app
 
 # Run the application.
 CMD echo "Inject command"
