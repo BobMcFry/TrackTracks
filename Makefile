@@ -1,19 +1,15 @@
 
-POETRY=poetry
-POETRY_RUN=${POETRY} run
+UV=uv
+UV_RUN=${UV} run
 
 .PHONY: format
 format:
-	${POETRY_RUN} ruff format .
+	${UV_RUN} ruff format .
 
 .PHONY: lint
 lint:
-	${POETRY_RUN} ruff check .
+	${UV_RUN} ruff check .
 
 .PHONY: type
 type:
-	${POETRY_RUN} mypy --install-types .
-
-.PHONY: requirements
-requirements:
-	${POETRY} export --format requirements.txt --output requirements.txt
+	${UV_RUN} mypy --install-types .
