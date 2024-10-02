@@ -13,3 +13,7 @@ lint:
 .PHONY: type
 type:
 	${UV_RUN} mypy --install-types .
+
+.PHONY: generate_qr_codes
+generate_qr_codes:
+	PYTHONPATH=. ${UV_RUN} python tracktracks/main/generate_qr_codes.py
