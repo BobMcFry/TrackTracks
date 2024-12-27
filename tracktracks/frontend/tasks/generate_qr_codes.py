@@ -3,7 +3,7 @@ from pathlib import Path
 
 from qrcode import QRCode
 
-from tracktracks.frontend.model import TileType, MAPPING_TILE_TYPE_ENUM
+from tracktracks.frontend.model import MAPPING_TILE_TYPE_ENUM, TileType
 from tracktracks.frontend.qr_conversion import encode_qr_id
 
 

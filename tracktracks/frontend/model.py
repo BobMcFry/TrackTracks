@@ -30,4 +30,7 @@ class TileType(IntEnum):
     SIGNAL = 2
 
 
-MAPPING_TILE_TYPE_ENUM = {TileType.TRACK: TrackType, TileType.SIGNAL: SignalType}
+MAPPING_TILE_TYPE_ENUM: dict[TileType, type[SignalType] | type[TrackType]] = {
+    TileType.TRACK: TrackType,
+    TileType.SIGNAL: SignalType,
+}
