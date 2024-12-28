@@ -1,6 +1,9 @@
-
 UV=uv
 UV_RUN=${UV} run
+.DEFAULT_GOAL := clean-up
+
+.PHONY: clean-up
+clean-up: format lint type
 
 .PHONY: format
 format:
@@ -8,7 +11,7 @@ format:
 
 .PHONY: lint
 lint:
-	${UV_RUN} ruff check .
+	${UV_RUN} ruff check --fix .
 
 .PHONY: type
 type:

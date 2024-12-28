@@ -2,7 +2,9 @@
 name = "tracktracks"
 version = "0.2.0"
 description = "Scan visual cues and translate them into rail tracks"
-authors = ["BobMcFry"]
+authors = [
+    {name = "BobMcFry", email = ""}
+]
 license = "GNU General Public License Version 3"
 readme = "README.md"
 requires-python = ">=3.12"
@@ -16,4 +18,22 @@ dependencies = [
 dev-dependencies = [
     "mypy>=1.11.2",
     "ruff>=0.6.8",
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+
+[tool.ruff.lint]
+select = [
+    "F",    # pyflakes
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "C90",  # McCabe
+    "I",    # isort
+    "N",    # pep8-naming
+    "UP",   # pyupgrade
+    "ERA",  # Eradicate
+    "PL",   # pylint
+    "RUF",  # ruff-specific rules
 ]
